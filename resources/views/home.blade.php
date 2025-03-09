@@ -3,14 +3,17 @@
       <!-- header -->
       <div class="top_header">
          <nav class="navbar ps-4 pe-2 header">
-            <div class="brand d-flex justify-content-center w-100 ">
-               <img src="{{ asset('assets/img/logo.png') }}" class="img-fluid logo" alt="Logo">
+            <div class="brand d-flex text-white justify-content-center w-100 ">
+               <h1>
+                  SPUR
+               </h1>
+               {{-- <img src="{{ asset('assets/img/logo.png') }}" class="img-fluid logo" alt="Logo"> --}}
             </div>
          </nav>
       </div>
    
       <!-- introduction section -->
-      <div class="intro d-flex">
+      <div class="intro d-flex justify-content-center">
          <div class="link">
             <label for="url">
             <i class="fa fa-link" ></i>
@@ -32,9 +35,9 @@
                <form method="POST" action="{{ route('url.store') }}">
                   @csrf
                   <fieldset class="fieldInput col-lg-6  col-md-7 col-sm-7 col-12">
-                     <input class="form-input" id="url" name='url' type="url" placeholder="Paste Url">
-                     <button type="submit" class="form-submit">
-                        {{ __('Submit') }}
+                     <input class="form-input border border-opacity-25 rounded-pill" id="url" name='url' type="url" placeholder="Вставить URL-адрес">
+                     <button type="submit" class="ms-2 form-submit">
+                        {{ __('подавать') }}
                      </button>
                   </fieldset>
                   @if ($errors->any())
@@ -50,16 +53,16 @@
             </div>
          </div>
    
-         <div class="d-none d-lg-block  hero_illustrator blob_holder">
-               <img src="{{ asset('assets/img/blob.gif') }}" class="img-fluid blob_img">
-         </div>
+         {{-- <div class="d-none d-lg-block  hero_illustrator blob_holder"> --}}
+               {{-- <img src="{{ asset('assets/img/blob.gif') }}" class="img-fluid blob_img"> --}}
+         {{-- </div> --}}
    
       </div>
    
       <!-- footer -->
       <div class="footer">
-         <div class="w-100 copy-right-info text-center">
-            <p>Copyright © 2023 WebSpur</p>
+         <div class="w-100  copy-right-info text-center">
+            <p>Copyright © 2025 WebSpur</p>
    
          </div>
       </div>
@@ -90,14 +93,14 @@
                <div class="modal-body">
                   <div class="">
                      <h5 class="info text-center">
-                        Here is your link
+                       Вот ваша ссылка
                      </h5>
                      <div class="modal-input">
                         <fieldset class="modal-fieldset fieldInput col-lg-6  col-md-7 col-sm-7 col-12">
-                           <input class="form-input" id="url" type="url"
+                           <input class="form-input" id="shortened-url" type="url"
                             value="@isset($data){{ $data }} @endisset" disabled>
                            <button class="form-submit" id="copyButton">
-                              Copy
+                              Скопировать
                            </button>
                         </fieldset>
                         <div class="success-message text-success">
@@ -112,7 +115,6 @@
    </div>  
        <!-- custom js for modal -->
     @isset($data)<script src="{{ asset('js/index.js') }}"></script>  @endisset
- 
-</x-general>
 
+</x-general>
 

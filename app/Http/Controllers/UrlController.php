@@ -3,41 +3,32 @@
 namespace App\Http\Controllers;
 
 use Illuminate\View\View;
-use Illuminate\Http\RedirectResponse; 
-use App\Models\url;
+use Illuminate\Http\RedirectResponse;
+use App\Models\Url;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
-// use Illuminate\Support\Carbon;
+use Illuminate\Support\Str;
 
 class UrlController extends Controller
 {
+    private const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    private const URL_ID_LENGTH = 6;
 
-    private string  $alphabets;
-    private string $randomLetters;
-     
-
-    public function  index() : view 
+    public function index(): View
     {
         return view('home');
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Generate a random URL ID
      */
-    public function createUrlId(): string
+    private function createUrlId(): string 
     {
-        $this->alphabets = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-
-        $this->randomLetters =  substr(str_shuffle($this->alphabets),0,4).
-                                rand(0,9).
-                                substr(str_shuffle($this->alphabets),0,1) ;
-       
-        return $this->randomLetters;
+        return Str::random(self::URL_ID_LENGTH - 1) . rand(0, 9);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created URL
      */
     public function store(Request $request): RedirectResponse
     {
@@ -45,32 +36,39 @@ class UrlController extends Controller
             'url' => 'required|string|max:255|url',
         ]);
 
-        // $currentUrl = url()->current();
-  
-        $url = $request['url'];
         $urlId = $this->createUrlId();
-        $baseUrl = url('/'); 
-        $newUrl = $baseUrl .'/'. $urlId;
-        session()->flash('data', $newUrl);
+        $newUrl = url('/') . '/' . $urlId;
 
-        DB::insert('insert into urls (url, url_id) values (?, ?)', [$url, $urlId]);
+        Url::create([
+            'url' => $validated['url'],
+            'url_id' => $urlId
+        ]);
 
-        return redirect()->route('base.route')->with('data',$newUrl);
-
+        return redirect()
+            ->route('base.route')
+            ->with('data', $newUrl);
     }
 
     /**
-     * Display the specified resource.
+     * Redirect to the original URL
      */
-    public function show(url $url): string
+    public function show(string $urlId): RedirectResponse
     {
-        echo $url;
+        $url = Url::where('url_id', $urlId)->first();
+
+        if (!$url) {
+            return redirect()
+                ->back()
+                ->with('error', 'URL not found');
+        }
+
+        return redirect()->to($url->url);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(url $url)
+    public function edit(Url $url)
     {
         //
     }
@@ -78,7 +76,7 @@ class UrlController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, url $url)
+    public function update(Request $request, Url $url)
     {
         //
     }
@@ -86,7 +84,7 @@ class UrlController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(url $url)
+    public function destroy(Url $url)
     {
         //
     }

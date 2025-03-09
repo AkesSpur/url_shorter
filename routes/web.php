@@ -16,7 +16,4 @@ Route::get('/', function ($data = null) {
 Route::resource('url', UrlController::class)
 ->only(['index', 'store']);
 
-Route::get('/{id}',function (string $id){
-    $urlFetcher = new UrlController;
-    $urlFetcher->show($id);
-});
+Route::get('/{id}', [UrlController::class, 'show']);

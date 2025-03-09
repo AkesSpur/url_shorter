@@ -17,9 +17,14 @@
     <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/fontawesome/css/all.min.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/plugin/toastr/toatr.css') }}" rel="stylesheet">
+
+    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.75/build/spline-viewer.js"></script>
+
 </head>
 
 <body>
+    <spline-viewer class="background" url="https://prod.spline.design/rD3tRiOrg-SCx4bS/scene.splinecode"></spline-viewer>
+
     <div>
         {{ $slot }}
     </div>
